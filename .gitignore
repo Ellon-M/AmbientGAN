@@ -11,6 +11,8 @@ share
 midi/midi_files/*
 *.csv
 *.cfg
+*.so
+*.pkl
 
 #hidden
 .*
