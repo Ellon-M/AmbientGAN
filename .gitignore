@@ -9,10 +9,10 @@ share
 
 # misc
 midi/midi_files/*
+midi/*.so
+midi/*.pkl
 *.csv
 *.cfg
-*.so
-*.pkl
 
 #hidden
 .*
