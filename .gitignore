@@ -1,0 +1,17 @@
+# environment modules
+bin
+build
+__pycache__
+include
+lib
+lib64
+share
+
+# misc
+midi/midi_files/*
+*.csv
+*.cfg
+
+#hidden
+.*
+!/.gitignore
