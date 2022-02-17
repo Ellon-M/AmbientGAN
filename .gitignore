@@ -13,6 +13,7 @@ midi/*.so
 midi/*.pkl
 *.csv
 *.cfg
+playground.py
 
 #hidden
 .*
