@@ -6,6 +6,7 @@ include
 lib
 lib64
 share
+models
 
 # misc
 midi/midi_files/*
@@ -14,6 +15,8 @@ midi/*.pkl
 *.csv
 *.cfg
 playground.py
+*.pth
+*.png
 
 #hidden
 .*

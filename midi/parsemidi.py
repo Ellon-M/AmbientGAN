@@ -1,4 +1,4 @@
-## Copyright 2022 Ellon Mordecai
+## Author: 2022 Ellon
 
 
 # Lint as python3
