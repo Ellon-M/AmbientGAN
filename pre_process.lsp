@@ -14,20 +14,18 @@
 	;csv_path: path to the CSV file containing the data to be processed
 		
  (setq parser (CSV:make-row-parser " " "\""))
- (setf rows (define fileparser (CSV:parse-file csv_path "," "\"")))
+;(setf rows (define fileparser (CSV:parse-file csv_path " \n|\r" "\r")))
+ (set 'allrows (read-file csv_path))
  (setf all_splits '())
- (dolist (row rows)
-   (set 'newrow (slice row 2))
-   (setf split_row '())
-   (dolist (eachrow newrow) 
-     (set 'split (parser eachrow))
-     (setf merged_row (push split split_row -1))
+   (dolist (row (parse allrows "\n" 0)) 
+     ;(set 'split (parser row))
+     (append-file path row)
     )
-   (setf all_merges (push merged_row all_splits -1))
- )
-
- (write-file path (string all_splits))
 )
 
-(write_to "ambience/fore1.lsp" "midi/notes_on.csv")
+
+(write_to "ambience/aft.lsp" "midi/csv.csv")
+
+
+
 

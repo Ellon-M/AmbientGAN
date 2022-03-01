@@ -16,22 +16,32 @@ def pickleLoader(pklFile):
         pass
 
 
-
 cpdef unpickleBytes():
     cdef list result = []
-    with open('message_bytes.pkl','rb') as f:
+    with open('enc_notes.pkl','rb') as f:
         for byte in pickleLoader(f):
-           result.append(byte)
+            result.append(byte)
     
     return result
 
 
 cpdef unpickleBytesAsArray():
     cdef list result = []
-    with open('message_bytes.pkl','rb') as f:
+    with open('enc_notes.pkl','rb') as f:
+        for byte in pickleLoader(f):
+           result.append(byte)
+
+    cdef cnp.ndarray[object, ndim=2] nd_bytes_arr = np.asarray(result)
+    return nd_bytes_arr
+
+
+cpdef unpickleProgramBytesAsArray():
+    cdef list result = []
+    with open('enc_programs.pkl','rb') as f:
         for byte in pickleLoader(f):
            result.append(byte)
 
     cdef cnp.ndarray[unsigned char, ndim=2] nd_bytes_arr = np.asarray(result)
     return nd_bytes_arr
+
 

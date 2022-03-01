@@ -10,6 +10,10 @@ models
 
 # misc
 midi/midi_files/*
+midi/bin
+midi/build
+midi/__pycache__
+midi/test
 midi/*.so
 midi/*.pkl
 *.csv
@@ -17,6 +21,7 @@ midi/*.pkl
 playground.py
 *.pth
 *.png
+ambience/aft.lsp
 
 #hidden
 .*

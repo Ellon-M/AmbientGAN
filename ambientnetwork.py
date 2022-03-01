@@ -4,7 +4,7 @@
 # Lint as python3
 import sys
 import numpy as np
-from tokenize import NoteTokenizer
+from tokenizer.tokenize import NoteTokenizer
 import time
 import datetime
 import sys

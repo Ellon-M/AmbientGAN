@@ -116,44 +116,29 @@ class NoteTokenizer:
         """
 
         # generator model
-        model = Generator(256, 50).cuda()
+        model = Generator(256, 1000).cuda()
 
         # samples list
         generated = []
 
         model.load_state_dict(torch.load(model_path))
-        noise_ = torch.randn(32, 1000).cuda()
+        noise_ = torch.randn(128, 1000).cuda()
         model.eval()
         out = model(noise_)
-
-        # inverse normalization
-#         g = get_norm_vals()
-#         unnorm_notes = [((note * g['sd']) + g['mean']) for note in out]
 
         # tensor to numpy array
         for li in out:
             num_li = np.array(li.cpu().detach().numpy())
             generated.append(num_li)
 
-        # 2 notes per batch
-        f_notes = []
-        idx = 0
-        for note in generated:
-            next_id = idx + 2
-            f_notes.append(note[idx:next_id])
-            idx+=1
-
-        # flatten
-        final_notes = []
-        for fnote in f_notes:
-            for n in fnote:
-                final_notes.append(n)
-
         # int to note mapping
         n_vocab = len(set(notes))
         note_items = sorted(set(item for item in notes))
         notes_ref_dict = dict((ref, note) for ref, note in enumerate(note_items))
-        pred_notes_unnorm = [((x * n_vocab/2) + n_vocab/2) for x in final_notes]
-        pred_notes = [notes_ref_dict[int(x)] for x in pred_notes_unnorm]
-
-        return pred_notes
+        
+        for gen_item in generated:
+            pred_notes_unnorm = [((x * n_vocab/2) + n_vocab/2) for x in gen_item]
+            pred_notes = [notes_ref_dict[int(x)] for x in pred_notes_unnorm]
+            preds.append(pred_notes)
+        
+        return preds
