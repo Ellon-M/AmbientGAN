@@ -140,16 +140,15 @@ class Generator(nn.Module):
 
 
     def forward(self, z):
-      z = z.view(32, 1000)
+      z = z.view(128, 1000)
       out = self.l1(z)
-      out = out.view(32, int(self.out))
+      out = out.view(128, int(self.out))
       out = self.l2(out)
-      out = out.view(32, int(self.out * 2))
+      out = out.view(128, int(self.out * 2))
       out = self.l3(out)
 #       out = out.view(32, -1, 1, 1)
 #       out, p1 = self.attn(out)
 #       out = torch.flatten(out, 1)
-      out = out.view(32, int(self.out * 2))
       out = self.last(out)
 #       return out.squeeze(), p1
       return out.squeeze()
@@ -203,11 +202,11 @@ class Discriminator(nn.Module):
 
 
   def forward(self, x):
-    x = x.view(32, self.seq_length, 1)
+    x = x.view(128, self.seq_length, 1)
     out = self.l1['uni-lstm'](x)[0]
-    out = out.view(32, self.seq_length, self.out)
+    out = out.view(128, self.seq_length, self.out)
     out = self.l1['bi-lstm'](out)[0]
-    out = out.view(32, self.seq_length, int(self.out))
+    out = out.view(128, self.seq_length, int(self.out))
     out = self.l2(out)
     out = self.l3(out)
 #     out = out.view(32, int(self.out / 2), self.seq_length,  1)
@@ -227,14 +226,14 @@ class SAGAN:
   """ trainer class """
 
   def __init__(self):
-      self.model_save_step = 300
-      self.model_save_path = 'AmbientGAN/models'
-      self.pretrained_model = False
-      self.lambda_gp = 0.3
+      self.model_save_step = config.save_step
+      self.model_save_path = config.save_path
+      self.pretrained_model = config.pretrained
+      self.lambda_gp = config.lambda_gp
       self.d_int = 1
       self.d_loss = []
       self.g_loss = []
-      self.gen_train_step = 10
+      self.gen_train_step = config.gen_train_step
 
       torch.cuda.empty_cache()  # clear GPU cache
 
@@ -246,11 +245,11 @@ class SAGAN:
 
   def build(self):
 
-      self.G = Generator(256, 50).cuda()
-      self.D = Discriminator(512, 50).cuda()
+      self.G = Generator(256, 1000).cuda()
+      self.D = Discriminator(512, 1000).cuda()
 
-      self.g_opt = torch.optim.Adam(filter(lambda p: p.requires_grad, self.G.parameters()), lr=0.0002, betas=(0.5, 0.999))
-      self.d_opt = torch.optim.Adam(filter(lambda p: p.requires_grad, self.D.parameters()), lr=0.0002, betas=(0.5, 0.999))
+      self.g_opt = torch.optim.Adam(filter(lambda p: p.requires_grad, self.G.parameters()), lr=config.g_lr, betas=(config.g_beta1, config.g_beta2))
+      self.d_opt = torch.optim.Adam(filter(lambda p: p.requires_grad, self.D.parameters()), lr=config.d_lr, betas=(config.d_beta1, config.d_beta2))
 
       self.criterion = nn.BCELoss()
       self.c_loss = torch.nn.CrossEntropyLoss()
@@ -279,7 +278,7 @@ class SAGAN:
       n_vocab = len(set(notes))
       notes_dict = notetokenizer.tokenize(notes)
 
-      X_train, y_train = notetokenizer.prepNoteSequences(notes, notes_dict, 50, n_vocab)
+      X_train, y_train = notetokenizer.prepNoteSequences(notes, notes_dict, 1000, n_vocab)
 
 
       # Start with trained model
@@ -299,8 +298,8 @@ class SAGAN:
           real_sequences = X_train[idx]
 
           # adv ground truths
-          real = torch.ones(batch_size, 50).cuda()
-          fake = torch.zeros(batch_size, 50).cuda()
+          real = torch.ones(batch_size, 1000).cuda()
+          fake = torch.zeros(batch_size, 1000).cuda()
 
           #----training D----
 
@@ -329,7 +328,7 @@ class SAGAN:
 
 
           # first time training - no pretrained generator
-          z = torch.randn(normalized_res.size(0), 1000).cuda()
+          z = torch.randn(batch_size, 1000).cuda()
           # fake_sequences, gf = self.G(z)    # attn
           fake_sequences = self.G(z)
           # D_out_fake, df = self.D(fake_sequences)   # attn
@@ -360,7 +359,7 @@ class SAGAN:
           #----training G----
           if epoch % self.d_int == 0:
               # random noise
-              noise = torch.randn(normalized_res.size(0), 1000).cuda()
+              noise = torch.randn(batch_size, 1000).cuda()
               # fake_sequences, _ = self.G(noise)   # attn
               fake_sequences = self.G(noise)
 

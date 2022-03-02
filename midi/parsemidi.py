@@ -14,8 +14,8 @@ from tqdm import tqdm
 import enc_messages
 import csv
 
-#sys.path.append('../')
-#from tokenizer.tokenize import NoteTokenizer
+sys.path.append('../')
+from tokenizer.tokenize import NoteTokenizer
 
 
 warnings.filterwarnings("ignore")
@@ -26,7 +26,6 @@ class MidiParser:
     def __init__(self):
         self.notes = []
         
-
 
     def writeByteArray(self, midi_directory, filename):
         """ Encodes midi messages to bytearrays and writes them in an external file
@@ -43,9 +42,9 @@ class MidiParser:
                 mid = MidiFile(file, clip=True)
                 print("Parsing %s" % file)
 
-                for i, track in enumerate(mid.tracks[1:]):
+                for i, track in enumerate(mid.tracks):
                     for j, msg in enumerate(track):
-                        if msg.is_meta == False and (msg.type != "program_change" or msg.type != "control_change"):
+                        if msg.is_meta == False:
                             frozen_msg = freeze_message(msg)
                             fm.append(frozen_msg.bin())
             
@@ -107,7 +106,7 @@ class MidiParser:
                 track_messages = []
                 for i, track in enumerate(mid.tracks):
                     for msg in track:
-                         if msg.is_meta == False and (msg.type != "program_change" or msg.type != "control_change"):
+                         if msg.is_meta == False:
                             bifurcated_msg = str(msg).split()
                             track_messages.append(bifurcated_msg)
 
@@ -116,24 +115,47 @@ class MidiParser:
 
 
     def arrayToMessage(split_message):
-        """ Converts split messages from a list to a message object that can be appended to tracks
+        """ Converts a stringified message from a string to a message object
 
-            Parameters:
-                splitMessage: list
-                    the split up message object
+        Parameters:
+             splitMessage: string
+                stringified message
 
-        """ 
+        Returns:
+            message: Object
+                Midi Message object
+                 
+        """
+        def replace_all(rep_dict, string):
+             for key in rep_dict:
+                 string = string.replace(key, rep_dict[key])
+             return string
 
-        joined_message = ''.join(split_message)
-
-        def messagify(text):
-            return "Message(" + text + ")"
-
-
-        message = messagify(joined_message)
+        #joined_message = ''.join(split_message)
+        joined_message = replace_all({"," : " "}, split_message) # all different channels can be unified to one channel by replacing all channels with a channel of choice
+        message = mido.Message.from_str(joined_message)
 
         return message
+    
+    
+    def writeMidi(self, model_path):
+        """ creates midi messages from model-generated notes that can be appended to tracks and converted to midi files
+        
+        Parameters:
+            model_path: string 
+                path to the pre-trained generator model
 
-mp = MidiParser()
-#print(mp.writeByteArray('midi_files/', 'enc_notes.pkl'))
-print(mp.messageToCSV('midi_files/', 'csv.csv'))
+        Returns:
+            message notes: list
+                Midi Messages
+        """
+        notes = getNotes()
+        notetokenizer = NoteTokenizer()
+        gen_notes = notetokenizer.generate(notes, '../input/models/900__G.pth')
+
+        message_notes = []
+        for note in gen_notes[0]:
+            message_notes.append(arrayToMessage(note))
+
+        return message_notes
+

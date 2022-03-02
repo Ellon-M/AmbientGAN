@@ -4,21 +4,42 @@
 # Lint as python3
 import numpy as np
 import torch
-import torch.nn as nn
 import torch.nn.functional as F
+import argparse
 from torch.autograd import Variable
+from ambientnetwork import SAGAN
 
 from torch.backends import cudnn
 
-def main():
+def params():
+    """ Model arguments passed before training
+
+    """
+    parser = argparse.ArgumentParser()
+
+    # train setting
+    parser.add_argument('--epochs', type=int, default=1000)
+    parser.add_argument('--batch-size', type=int, default=128)
+    parser.add_argument('--progress-interval' type=int, default=5)
+
+    return parser.parse_args()
+
+
+config = params()
+
+
+def main(config):
+
   # fast training
   cudnn.benchmark = True
 
   sagan = SAGAN()
 
   # make these arg params
-  sagan.train(1000, 32, 5)
+  sagan.train(1000, 128, 5)
 
 
-main()
+
+print(config)
+main(config)
 
