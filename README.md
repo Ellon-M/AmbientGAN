@@ -30,7 +30,7 @@ Training time on GPU: 8-10 Minutes for 2000 Epochs.
 *MIDI tempo used for all outputs ranged between 250000 and 500000.*
 *Time sig, key sig and any necessary meta messages or lyrics found in MIDI files are pre-defined, and are not part of the model output.*
 
-Samples outputs are [here]().
+Samples outputs are [here](https://ellon-m.github.io/AmbientGAN/).
 
 
 **TODO**
