@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ambient GAN</title>
+    <style>
+	@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300&family=Smooch+Sans:wght@100&display=swap');
+
+	@font-face {
+	    font-family: "Harmond";
+	    src: url("https://res.cloudinary.com/denphvygd/raw/upload/v1646241461/ambience/Harmond-ExtraBoldExpanded_gjupsu.otf") format("opentype");
+	}
+
+	@font-face {
+	    font-family: "Harmond-cond";
+	    src: url("https://res.cloudinary.com/denphvygd/raw/upload/v1646241983/ambience/Harmond-SemiBoldCondensed_ykdjig.otf")
+	}
+
+	* {
+	     box-sizing: border-box;
+	}
+	body {
+	     margin: 0;
+	     height: 100vh;
+	     width: 100vw;
+	     overflow-x: hidden;
+	     background-color: black;
+	}
+	main {
+	      height: 100vh;
+	      width: 100vw;
+	      margin: 0;
+	      padding: 0;
+	      border: none;
+	      position: relative;
+	      display: flex;
+	     }
+
+	section {
+	     width: 50vw;
+	     height: 50vh;
+	     margin: 0;
+	     position: relative;
+	     padding: 0;
+
+
+	}
+
+	.left-sec {
+	     height: 100vh;
+	     margin: 0;
+	     width: 50vw;
+	     position: relative;
+	     float: left;
+	}
+
+	.right-sec {
+             height: 100vh;
+             margin: 0;
+             width: 50vw;
+             position: relative;
+	     float: right;
+        }
+
+
+
+	.sample-1-sec {
+	     width: 50vw;
+	     height: 50vh;
+	     margin: 0;
+	     background: url('https://res.cloudinary.com/denphvygd/image/upload/v1646236643/ambience/ambient4_fhqfxs.jpg');
+	     background-size: cover;
+	     background-repeat: no-repeat;
+
+	}
+
+	h3 {
+	     margin: 0;
+	     padding-left: 14vw;
+	     padding-top: 18vh;
+	     text-transform: uppercase;
+	     font-size: 4rem;
+	     color: #F8F8FF;
+	     font-family: Harmond;
+	     transition: .6s;
+             animation: ease-in-out;
+
+	}
+
+
+
+	.sample-2-sec {
+	width: 50vw;
+        height: 50vh;
+	margin: 0;
+	background: url('https://res.cloudinary.com/denphvygd/image/upload/v1646236645/ambience/ambient3_ptdimt.jpg');
+	background-size: cover;
+        background-blend-mode: darken;
+	background-repeat: no-repeat;
+
+
+	}
+
+	.sample-3-sec {
+	width: 50vw;
+        height: 50vh;
+	margin: 0;
+	background: url('https://res.cloudinary.com/denphvygd/image/upload/v1646236644/ambience/ambient1_ngef19.jpg');
+	background-size: cover;
+        background-blend-mode: darken;
+	background-repeat: no-repeat;
+
+	}
+
+	.sample-4-sec {
+	width: 50vw;
+        height: 50vh;
+	margin: 0;
+	background: url('https://res.cloudinary.com/denphvygd/image/upload/v1646236644/ambience/ambient2_suh83h.jpg');
+	background-size: cover;
+        background-repeat: no-repeat;
+	background-blend-mode: darken;
+	}
+
+	.sample-details {
+	  height: 35%;
+	  margin-top: 3.8vh;
+	  padding: 6px;
+	  position: relative;
+	  display: block;
+	  width: 100%;
+	}
+
+	.sample-details a {
+	  text-decoration: none;
+	  font-size: 1.88rem;
+	  color: silver;
+	  margin-left: 11vw;
+	  padding: 8px;
+	  text-align: center;
+	  text-transform: uppercase;
+	  font-family: Harmond-cond;
+	  transition: .77s;
+	  animation: ease-in-out;
+	}
+
+	.sample-details a:hover {
+	  color: #F8F8FF;
+	  filter: contrast(175%) brightness(113%);
+	}
+
+	.sample-details p {
+	 text-transform: uppercase;
+	 color: #F8F8FF;
+	 font-size: 1.44rem;
+	 font-weight: lighter;
+	 text-align: center;
+	 margin-top: 3.4vh;
+	 font-family: 'Raleway', sans-serif;
+	 font-family: 'Smooch Sans', sans-serif;
+	}
+
+	footer {
+	 width: 100vw;
+	 bottom: 0;
+	 margin: 0;
+	 display: inline-flex;
+	 height: 3vh;
+	 max-height: 3vh;
+	 background-color: black;
+	 position: relative;
+	}
+
+	footer a {
+	 text-align: left;
+	 text-decoration: none;
+	 color: #666666;
+	 font-size: 1.4rem;
+	 margin-left: 15%;
+	 margin-bottom: 0;
+	 align-self: center;
+	 width: 25%;
+	 font-family: Harmond-cond;
+	 letter-spacing: .08em;
+	 position: relative;
+	}
+
+	footer p {
+	  text-align: right;
+	  align-self: center;
+	  text-decoration: none;
+	  font-family: Harmond-cond;
+	  text-transform: uppercase;
+	  font-size: 1.2rem;
+	  margin: 0;
+	  color: #666666;
+	  width: 44%;
+	  bottom: 0;
+	  letter-spacing: .08em;
+	  transition: .8s;
+	  position: relative;
+	}
+
+	footer a:hover {
+	  color: white;
+	}
+
+	h3:hover {
+	  color: white;
+	  transform: scale(1.028);
+	  filter: blur(1.6px);
+	}
+
+	p {
+	 font-family: Harmond-cond;
+	}
+
+	audio {
+	 filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(82%);
+    	 width: 100%;
+   	 height: 27px;
+	 opacity: .3;
+	 transition: .77s;
+	}
+
+	audio:hover {
+	  opacity: .9;
+	}
+
+	audio::-webkit-media-controls-panel, video::-webkit-media-controls-panel {
+         background-color: transparent;
+	 opacity: .55;
+	}
+
+	audio::-webkit-media-controls-volume-control-container.closed {
+	  display: none !important;
+	}
+
+	audio::-webkit-media-controls-volume-control-container{
+	  display: none !important;
+	}
+
+	audio::-webkit-media-controls-mute-button {
+	  display: none !important;
+	}
+
+	audio::-webkit-media-controls-volume-slider {
+	  display: none !important;
+	}
+
+	.audio {
+	  position: relative;
+	  bottom: 0;
+	  margin-top: -4vh;
+	}
+
+
+	@media only screen and (max-width: 72em) {
+
+	   main {
+	     display: block;
+	     height: 100vh !important;
+	    }
+
+	   section {
+	     width: 100vw;
+	    }
+
+	   .left-sec {
+             height: 100vh !important;
+             margin: 0;
+             width: 100vw;
+             position: relative;
+           }
+
+	   .right-sec {
+	     height: 100vh !important;
+	     margin: 0;
+	     width: 100vw;
+	     position: relative;
+
+	    }
+
+	   .sample-1-sec {
+	     width: 105%;
+	
+	    }
+	   
+	   .sample-2-sec {
+	    width: 105%;
+	    height: 50vh;
+
+ 	   }
+
+	   .sample-3-sec {
+	    width: 105%;
+	   }
+
+	   .sample-4-sec {
+	    width: 105%;
+	    height: 50vh;
+	   }
+
+	   h3 {
+	    padding-left: 35.5vw;
+	    font-size: 2rem;
+           }
+
+	   footer a {
+	    font-size: .92rem;
+	    padding-top: 5px;
+	   }
+
+	   footer p {
+            font-size: .89rem;
+	   }
+
+	   .sample-details a {
+	    margin-left: 18.8vw;
+	   }
+
+	   .sample-details p {
+	    margin-left: -4.6vw;
+	   }
+	}
+
+    </style>
+  </head>
+  <body>
+	  <main>
+	      <div class='left-sec'>
+		<section class='sample-1-sec'>
+	   	  <h3 class='sample-heading'><span>Sample  &nbsp; 1</span></h3>
+                   <p class='sample-2-text'></p>
+		   <div class='sample-details'>
+		     <a href="https://www.noteflight.com/scores/view/3511b072104b91c314fd6a54afd4fb4e4043225a">View sheet</a>
+		     <a href="#">Soundcloud</a>
+		     <p><i><b>900</b> epochs &nbsp; &#8226; &nbsp; Self-inattentive &nbsp; &#8226 &nbsp; semi-supervised </i></p>
+		   </div>
+		   <div class='audio'>
+		   <audio controls>
+                   <source src="https://res.cloudinary.com/denphvygd/video/upload/v1646272547/ambience/firstsample116G_mp3cut.net_xnym5t.mp3" type="audio/mp3">
+                   Your browser does not Support the audio Tag
+               	   </audio>
+		   </div>
+		</section>
+		<section class='sample-2-sec'>
+			<h3 class='sample-heading'><span>Sample   &nbsp; 2</span></h3>
+                   <p class='sample-2-text'></p>
+		   <div class='sample-details'>
+                     <a href="https://www.noteflight.com/scores/view/142cbcbf09dee03c25e5015bba7b30c93cc46d5a">View sheet</a>
+                     <a href="#">Soundcloud</a>
+                     <p><i><b>1500</b> epochs &nbsp; &#8226; &nbsp; Self-inattentive &nbsp; &#8226 &nbsp; semi-supervised </i></p>
+                   </div>
+                   <div class='audio'>
+                   <audio controls>
+                   <source src="https://res.cloudinary.com/denphvygd/video/upload/v1646272573/ambience/1500G__20B_1_mp3cut.net_gjzmhw.mp3" type="audio/mp3">
+                   Your browser does not Support the audio Tag
+                   </audio>
+                   </div>
+
+		</section>
+	      </div>
+	      <div class='right-sec'>
+		<section class='sample-3-sec'>
+			<h3 class='sample-heading' style="filter: blur(2.5px)"><span>Sample  &nbsp; 3</span></h3>
+                   <p class='sample-2-text'></p>
+		   <div class='sample-details'>
+                     <a href="#" style="text-decoration: line-through">View sheet</a>
+                     <a href="#" style="text-decoration: line-through">Soundcloud</a>
+                     <p><i><b>Attentive</b>&nbsp;  Unavailable </i></p>
+                   </div>
+                   <div class='audio'>
+                   <audio controls>
+                   <source src="#" type="audio/mp3">
+                   Your browser does not Support the audio Tag
+                   </audio>
+                   </div>
+
+		</section>
+		<section class='sample-4-sec'>
+			<h3 class='sample-heading' style="filter: blur(2.5px)"><span>Sample  &nbsp; 4</span></h3>
+                   <p class='sample-4-text'></p>
+		   <div class='sample-details'>
+                     <a href="#" style="text-decoration: line-through">View sheet</a>
+                     <a href="#" style="text-decoration: line-through">Soundcloud</a>
+                     <p><i><b>Attentive</b>&nbsp; Unavailable  </i></p>
+                   </div>
+                   <div class='audio'>
+                   <audio controls>
+                   <source src="#" type="audio/mp3">
+                   Your browser does not Support the audio Tag
+                   </audio>
+                   </div>
+		</section>
+	      </div>
+	  </main>
+	  <footer>
+		 <a href="#">Link to source</a>
+		 <p>&copy; Ellon 2022</p>
+	  </footer>
+  </body>
+</html>

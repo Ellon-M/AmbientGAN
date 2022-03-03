@@ -8,8 +8,8 @@ import torch.nn.functional as F
 import argparse
 from torch.autograd import Variable
 from ambientnetwork import SAGAN
-
 from torch.backends import cudnn
+
 
 def params():
     """ Model arguments passed before training
@@ -37,7 +37,6 @@ def main(config):
 
   # make these arg params
   sagan.train(1000, 128, 5)
-
 
 
 print(config)

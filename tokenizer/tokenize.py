@@ -9,6 +9,7 @@ import re
 from utils import *
 from ambientnetwork import Generator
 
+
 class NoteTokenizer:
     def __init__(self):
         self.notes = []

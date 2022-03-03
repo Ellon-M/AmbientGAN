@@ -21,6 +21,7 @@ midi/*.pkl
 playground.py
 *.pth
 *.png
+*.jpg
 ambience/aft.lsp
 
 #hidden

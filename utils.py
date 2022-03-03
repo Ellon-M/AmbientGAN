@@ -6,7 +6,6 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 
 
-
 def normalize(x, axis=-1, order=2):
     """Normalizes a Numpy array.
 

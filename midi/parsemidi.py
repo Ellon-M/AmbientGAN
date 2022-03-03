@@ -114,7 +114,7 @@ class MidiParser:
                             csv_writer.writerow(bifurcated_msg)
 
 
-    def arrayToMessage(split_message):
+    def arrayToMessage(self, split_message):
         """ Converts a stringified message from a string to a message object
 
         Parameters:
@@ -158,4 +158,3 @@ class MidiParser:
             message_notes.append(arrayToMessage(note))
 
         return message_notes
-

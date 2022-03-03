@@ -1,7 +1,6 @@
 ; @module CSV
 ; 
-; @description Functions for parsing CSV files (updated for newlisp 10)
-;
+; @description Functions for parsing CSV files;
 
 (context 'CSV)
 

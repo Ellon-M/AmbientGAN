@@ -38,7 +38,6 @@ def get_norm_vals():
     notes_dict = notetokenizer.tokenize(notes)
 
     X_train, y_train = notetokenizer.prepNoteSequences(notes, notes_dict, 50, n_vocab)
-    # print(X_train[1])
 
     idx = np.random.randint(0, X_train.shape[0], 32)
     real_sequences = X_train[idx]
@@ -54,7 +53,6 @@ def get_norm_vals():
 
 
 # network
-
 
 class Self_Attn(nn.Module):
   """ Self Attention Layer """
@@ -310,12 +308,6 @@ class SAGAN:
           sd = torch.std(real_sequences)
           normalized_res = (real_sequences - mu)/sd
 
-          # generate a batch of notes - if pre-existing model
-          # self.G.load_state_dict(torch.load('AmbientGAN/models/300_G.pth'))
-          # noise_ = torch.randn(real_sequences.size(0), 1000).cuda()
-          # self.G.eval()
-          # pred_out = self.G(noise_)
-
 
           # train the discriminator on real sequences
           # D_out_real, dr = self.D(real_sequences)   # attn
@@ -327,7 +319,6 @@ class SAGAN:
           # print("D loss real", D_loss_real.data)
 
 
-          # first time training - no pretrained generator
           z = torch.randn(batch_size, 1000).cuda()
           # fake_sequences, gf = self.G(z)    # attn
           fake_sequences = self.G(z)
@@ -335,19 +326,10 @@ class SAGAN:
           D_out_fake = self.D(fake_sequences)
 
 
-          # train the discriminator with the generated sequences
-          # D_out_fake = self.D(pred_out)
-
           # hinge
           # D_loss_fake = D_out_fake.mean()
           D_loss_fake = torch.nn.ReLU()(1.0 + D_out_fake).mean()
           D_z_loss = self.criterion(D_out_fake, fake)
-          # print("D loss fake", D_loss_fake.data)
-
-
-          # print("Discriminator loss (real): ", D_loss_real)
-
-          # print("Discriminator loss (fake): ",  D_loss_fake)
 
 
           D_loss = D_out_loss + D_z_loss # network weights updated
@@ -369,12 +351,11 @@ class SAGAN:
               # G_out_fake_avg = torch.div(sum((G_out_fake)), len((G_out_fake)))
 #               G_loss = - G_out_fake.mean()
               G_loss = self.criterion(G_out_fake, real)
-              # print("Generator loss (fake): ", G_loss_fake)
+    
 
               self.resetGrad()
               G_loss.backward()
               self.g_opt.step()
-              # print("gamma", self.G.attn.gamma.mean().data[0])
 
           # train the generator after k steps
           if epoch % self.gen_train_step == 0:
