@@ -220,10 +220,10 @@ class Discriminator(nn.Module):
 
 
 
-class SAGAN:
+class SAGAN(object):
   """ trainer class """
 
-  def __init__(self):
+  def __init__(self, config):
       self.model_save_step = config.save_step
       self.model_save_path = config.save_path
       self.pretrained_model = config.pretrained
@@ -232,6 +232,9 @@ class SAGAN:
       self.d_loss = []
       self.g_loss = []
       self.gen_train_step = config.gen_train_step
+      self.epochs = config.epochs
+      self.interval = config.progress
+      self.batch_size = config.batch_size
 
       torch.cuda.empty_cache()  # clear GPU cache
 
@@ -261,14 +264,8 @@ class SAGAN:
       self.G.zero_grad()
       self.D.zero_grad()
 
-  def train(self, epochs, batch_size, interval):
+  def train(self):
       """ trains both the Discriminator and the Generator
-          Parameters:
-            epochs: int
-            batch_size: int
-              the size of a single batch of data in each training step
-            interval: int
-              iterations where the progress will be printed to the console/recorded
        """
       #load, convert the data
       notetokenizer = NoteTokenizer()
@@ -287,7 +284,7 @@ class SAGAN:
 
       #start train
       start_time = time.time()
-      for epoch in range(start, epochs):
+      for epoch in range(start, self.epochs):
 
           print("Epoch ", epoch + 1)
 
@@ -296,8 +293,8 @@ class SAGAN:
           real_sequences = X_train[idx]
 
           # adv ground truths
-          real = torch.ones(batch_size, 1000).cuda()
-          fake = torch.zeros(batch_size, 1000).cuda()
+          real = torch.ones(self.batch_size, 1000).cuda()
+          fake = torch.zeros(self.batch_size, 1000).cuda()
 
           #----training D----
 
@@ -362,7 +359,7 @@ class SAGAN:
             self.G.train()
 
           # progress
-          if (epoch + 1) % interval == 0:
+          if (epoch + 1) % self.interval == 0:
             elapsed = time.time() - start_time
             elapsed = str(datetime.timedelta(seconds=elapsed))
             print("Elapsed [{}], G_step [{}/{}], D_step[{}/{}], D Loss: {:.4f}, G Loss: {:.4f}"

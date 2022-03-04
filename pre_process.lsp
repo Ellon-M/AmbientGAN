@@ -25,8 +25,6 @@
 
 
 
-(write_to "ambience/aft.lsp" "midi/csv.csv")
-
 
 
 

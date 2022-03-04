@@ -151,7 +151,7 @@ class MidiParser:
         """
         notes = getNotes()
         notetokenizer = NoteTokenizer()
-        gen_notes = notetokenizer.generate(notes, '../input/models/900__G.pth')
+        gen_notes = notetokenizer.generate(notes, model_path)
 
         message_notes = []
         for note in gen_notes[0]:

@@ -33,10 +33,9 @@ def main(config):
   # fast training
   cudnn.benchmark = True
 
-  sagan = SAGAN()
+  sagan = SAGAN(config)
 
-  # make these arg params
-  sagan.train(1000, 128, 5)
+  sagan.train()
 
 
 print(config)
